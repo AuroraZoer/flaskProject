@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+        <title>{{ title }} - Travel</title>
+    {% else %}
+        <title>travel</title>
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='style/mystyle.css') }}">
+</head>
+<body>
+<div> Travel:
+    <a href={{ url_for('index') }}>Home</a>
+    <a href={{ url_for('history') }}>History</a>
+    <a href={{ url_for('form') }}>Form</a>
+</div>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</body>
+</html>

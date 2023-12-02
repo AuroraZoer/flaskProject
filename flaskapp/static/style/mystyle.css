@@ -1,0 +1,37 @@
+h1 {
+    color: blue;
+    background-color: yellow;
+    border: 1px dotted black;
+}
+
+a {
+    color: white;
+    background-color: black;
+    border: 2px dotted black;
+}
+
+/* Set the background image of the whole page */
+body {
+    background-image: url('../image/travel_background.jpg'); /* Update the path as per your project structure */
+    background-size: cover; /* To cover the entire background */
+    color: white; /* Set the font color to white */
+}
+
+/* Style for the title (assuming title is the h3 element) */
+h3 {
+    text-decoration: underline; /* Underline the title */
+    font-weight: bold; /* Make the title bold */
+    color: #FF0000; /* Set the color to red */
+    font-family: 'Times New Roman', serif; /* Change font to Times New Roman */
+    background-color: lightblue;
+}
+
+/* Change the font family of the form to cursive */
+form {
+    font-family: cursive;
+}
+
+/* Style for every label with a dark yellow background */
+label {
+    background-color: #edcd58; /* Dark yellow background */
+}

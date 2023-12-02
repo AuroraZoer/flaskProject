@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Travel Reservation Form</h1>
+    <h3>*denotes mandatory fields</h3>
+    <form action="{{ url_for('form') }}" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        {{ form.full_name.label }}<br>
+        {{ form.full_name() }}<br>
+        {% for error in form.full_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.email.label }}<br>
+        {{ form.email() }}<br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.package.label }}<br>
+        {{ form.package() }}<br>
+        {% for error in form.package.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.arrival_date.label }}<br>
+        {{ form.arrival_date() }}<br>
+        {% for error in form.arrival_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.num_of_people.label }}<br>
+        {{ form.num_of_people() }}<br>
+        {% for error in form.num_of_people.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.facilities.label }}<br>
+        {{ form.facilities() }}<br>
+        {% for error in form.facilities.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.discount_coupon_used.label }}<br>
+        {{ form.discount_coupon_used() }}<br>
+        {% for error in form.discount_coupon_used.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.agree_terms.label }}<br>
+        {{ form.agree_terms() }}<br>
+        {% for error in form.agree_terms.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+
+        {{ form.submit() }}
+    </form>
+{% endblock %}
