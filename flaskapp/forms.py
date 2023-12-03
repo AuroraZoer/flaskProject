@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, RadioField, SelectMultipleField, \
-    PasswordField, FileField
-from wtforms.validators import DataRequired, NumberRange, ValidationError, Regexp
+    PasswordField, FileField, BooleanField
+from wtforms.validators import DataRequired, NumberRange, ValidationError
 
 
 class SignUpForm(FlaskForm):
@@ -29,6 +29,7 @@ class EditProfileForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('Email address*:', validators=[DataRequired()])
     password = PasswordField('Password*:', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
 

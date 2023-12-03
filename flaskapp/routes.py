@@ -93,8 +93,12 @@ def login():
             flash('No user found with email: {}, please signup or retry with a valid email'.format(form.email.data))
             return redirect(url_for('login'))
         if user_in_db and check_password_hash(user_in_db.password_hash, form.password.data):
-            flash('Login success!')
             session['ID'] = user_in_db.id
+            if form.remember_me.data:
+                session.permanent = True
+            else:
+                session.permanent = False
+            flash('Login success!')
             return redirect(url_for('profile'))
         flash('Incorrect Password, please reenter your password')
         return redirect(url_for('login'))
@@ -121,6 +125,7 @@ def profile():
 @app.route('/form', methods=['POST', 'GET'])
 def form():
     if not session.get('ID') is None:
+        user_in_db = User.query.filter(User.id == session.get('ID')).first()
         form = TravelReservationForm()
         if form.validate_on_submit():
             if form.agree_terms.data != 'I agree':
@@ -142,7 +147,7 @@ def form():
 
             flash('Reservation Complete!')
             return redirect(url_for('profile'))
-        return render_template('form.html', title='Travel Reservation Form', form=form)
+        return render_template('form.html', title='Travel Reservation Form', form=form, user=user_in_db)
     else:
         flash('Please login or signup first')
         return redirect(url_for('choice'))

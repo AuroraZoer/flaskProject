@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -10,3 +12,5 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     JPG_UPLOAD_DIR = os.path.join(basedir, 'static/profile_pics')
+
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)  # 设置session的保存时间
