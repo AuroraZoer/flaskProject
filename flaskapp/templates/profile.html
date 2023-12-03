@@ -1,0 +1,64 @@
+{% extends "logined_base.html" %}
+
+{% block content %}
+    <div>
+        <!-- Welcome Section -->
+        <div>
+            <h1>Welcome {{ user.first_name }}</h1>
+        </div>
+
+        <!-- Second section with profile picture and links -->
+        <div>
+            <div style="float:left">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <img src="../static/image/default_user.jpg" alt="Default Profile Picture">
+                {% endif %}
+            </div>
+
+            <div style="float:right">
+                <a href={{ url_for('edit_profile') }}>Edit Profile</a>
+                <a href={{ url_for('form') }}>Make a Travel Reservation</a>
+            </div>
+        </div>
+
+        <!-- Clearing the float -->
+        <div style="clear:both;"></div>
+
+        <!-- Third section with user details -->
+        <div>
+            <p>Firstname: {{ user.first_name }}</p>
+            <p>Lastname: {{ user.last_name }}</p>
+            <p>Date of Birth: {{ user.date_of_birth }}</p>
+            <p>Current Country: {{ user.country }}</p>
+            <p>Current City: {{ user.city }}</p>
+            <p>Previously Traveled Countries: {{ user.previously_traveled_countries }}</p>
+            <p>Previous Reservations</p>
+            {% if reservations %}
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <th>Package</th>
+                        <th>Arrival Date</th>
+                        <th>Number of Persons</th>
+                        <th>Boarding</th>
+                        <th>Sight Seeing</th>
+                        <th>Discount Coupon Used</th>
+                    </tr>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.package }}</td>
+                            <td>{{ reservation.arrival_date }}</td>
+                            <td>{{ reservation.numb_of_persons }}</td>
+                            <td>{{ reservation.boarding }}</td>
+                            <td>{{ reservation.sight_seeing }}</td>
+                            <td>{{ reservation.discount_coupon_used }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No reservation history found for {{ user.first_name }}.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

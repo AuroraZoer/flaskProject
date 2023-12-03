@@ -1,0 +1,70 @@
+{% extends "logined_base.html" %}
+
+{% block content %}
+    <h1>Edit Profile</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.birthday.label }}<br>
+            {{ form.birthday() }}
+            {% for error in form.birthday.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            {{ form.marital_status.label }}<br>
+            {% for choice in form.marital_status %}
+                <tr>
+                    <td>{{ choice }}</td>
+                    <td>{{ choice.label }}</td>
+                </tr>
+            {% endfor %}
+            {% for error in form.marital_status.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.gender.label }} <br>
+            {% for choice in form.gender %}
+                <tr>
+                    <td>{{ choice }}</td>
+                    <td>{{ choice.label }}</td>
+                </tr>
+            {% endfor %}
+            {% for error in form.gender.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            {{ form.city.label }}<br>
+            {{ form.city() }}<br>
+            {% for error in form.city.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            {{ form.country.label }}<br>
+            {{ form.country() }}<br>
+            {% for error in form.country.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            {{ form.traveled_countries.label }}<br>
+            {{ form.traveled_countries() }}<br>
+            {% for error in form.traveled_countries.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+        <p>
+            {{ form.profile_picture.label }}<br>
+            {{ form.profile_picture(size=12) }}<br>
+            {% for error in form.profile_picture.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+    </form>
+{% endblock %}

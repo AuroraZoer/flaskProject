@@ -8,3 +8,5 @@ class Config(object):
         'sqlite:///' + os.path.join(basedir, 'flaskapp.db')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    JPG_UPLOAD_DIR = os.path.join(basedir, 'profile_pics')

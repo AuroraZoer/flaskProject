@@ -1,6 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h1>Welcome to Far Far Away Travels</h1>
-    <p> Welcome to the home page!</p>
+    <div style="text-align: center;">
+        <h1>Welcome to Far Far Away Travels</h1>
+        <a href="{{ url_for('signin') }}">Sign In</a> | <a href="{{ url_for('signup') }}">Sign Up</a>
+    </div>
 {% endblock %}
