@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flaskapp import app, db
-from flaskapp.forms import TravelReservationForm, SignUpForm, EditProfileForm, SignInForm
+from flaskapp.forms import TravelReservationForm, SignUpForm, EditProfileForm, LoginForm
 from flaskapp.models import User, Reservation, Profile
 from flaskapp.config import Config
 import os
@@ -70,7 +70,7 @@ def edit_profile():
         else:
             stored_profile = Profile.query.filter(Profile.user == user_in_db).first()
             if not stored_profile:
-                return render_template('edit_profile.html', title='Add your Profile', form=form)
+                return render_template('edit_profile.html', title='Add your Profile', form=form, user=user_in_db)
             else:
                 form.birthday.data = stored_profile.birthday
                 form.marital_status.data = stored_profile.marital_status
@@ -78,69 +78,79 @@ def edit_profile():
                 form.city.data = stored_profile.city
                 form.country.data = stored_profile.country
                 form.traveled_countries.data = stored_profile.traveled_countries
-                return render_template('edit_profile.html', title='Modify your Profile', form=form)
+                return render_template('edit_profile.html', title='Modify your Profile', form=form, user=user_in_db)
     else:
         flash('Please sign up first')
         return redirect(url_for('signup'))
 
 
-@app.route('/signin', methods=['GET', 'POST'])
-def signin():
-    form = SignInForm()
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
     if form.validate_on_submit():
         user_in_db = User.query.filter(User.email == form.email.data).first()
         if not user_in_db:
             flash('No user found with email: {}, please signup or retry with a valid email'.format(form.email.data))
-            return redirect(url_for('signin'))
+            return redirect(url_for('login'))
         if user_in_db and check_password_hash(user_in_db.password_hash, form.password.data):
             flash('Login success!')
             session['ID'] = user_in_db.id
             return redirect(url_for('profile'))
         flash('Incorrect Password, please reenter your password')
-        return redirect(url_for('signin'))
-    return render_template('signin.html', title='Sign In', form=form)
+        return redirect(url_for('login'))
+    return render_template('login.html', title='Sign In', form=form)
 
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    if session.get('ID') is None:
-        flash('Please sign up first')
-        return redirect(url_for('signup'))
-    user_in_db = User.query.filter(User.id == session.get('ID')).first()
-    reservations = None
-    profile = None
-    if user_in_db:
-        reservations = Reservation.query.filter(Reservation.user_id == user_in_db.id).all()
-        profile = Profile.query.filter(Profile.user_id == user_in_db.id).first()
-        print(reservations)
-    return render_template('profile.html', title='Profile', user=user_in_db, reservations=reservations,
-                           profile=profile)
+    if not session.get('ID') is None:
+        user_in_db = User.query.filter(User.id == session.get('ID')).first()
+        reservations = None
+        profile = None
+        if user_in_db:
+            reservations = Reservation.query.filter(Reservation.user_id == user_in_db.id).all()
+            profile = Profile.query.filter(Profile.user_id == user_in_db.id).first()
+            print(reservations)
+        return render_template('profile.html', title='Profile', user=user_in_db, reservations=reservations,
+                               profile=profile)
+    else:
+        flash('Please login or signup first')
+        return redirect(url_for('choice'))
 
 
 @app.route('/form', methods=['POST', 'GET'])
 def form():
-    form = TravelReservationForm()
-    if form.validate_on_submit():
-        if form.agree_terms.data != 'I agree':
-            flash(
-                'The reservation failed. Please agree to the terms and conditions to successfully make a reservation.')
-            return redirect(url_for('form'))
+    if not session.get('ID') is None:
+        form = TravelReservationForm()
+        if form.validate_on_submit():
+            if form.agree_terms.data != 'I agree':
+                flash(
+                    'The reservation failed. Please agree to the terms and conditions to successfully make a reservation.')
+                return redirect(url_for('form'))
 
-        reservation = Reservation(
-            package=form.package.data,
-            arrival_date=form.arrival_date.data,
-            num_of_people=form.num_of_people.data,
-            boarding='Boarding' in form.facilities.data,
-            sight_seeing='Sight seeing' in form.facilities.data,
-            discount_coupon_used=bool(form.discount_coupon_used.data),
-            user_id=session.get('ID')
-        )
-        db.session.add(reservation)
-        db.session.commit()
+            reservation = Reservation(
+                package=form.package.data,
+                arrival_date=form.arrival_date.data,
+                num_of_people=form.num_of_people.data,
+                boarding='Boarding' in form.facilities.data,
+                sight_seeing='Sight seeing' in form.facilities.data,
+                discount_coupon_used=bool(form.discount_coupon_used.data),
+                user_id=session.get('ID')
+            )
+            db.session.add(reservation)
+            db.session.commit()
 
-        flash('Reservation Complete!')
-        return redirect(url_for('profile'))
-    return render_template('form.html', title='Travel Reservation Form', form=form)
+            flash('Reservation Complete!')
+            return redirect(url_for('profile'))
+        return render_template('form.html', title='Travel Reservation Form', form=form)
+    else:
+        flash('Please login or signup first')
+        return redirect(url_for('choice'))
+
+
+@app.route('/choice')
+def choice():
+    return render_template('choice.html', title='Choice')
 
 
 @app.route('/logout')

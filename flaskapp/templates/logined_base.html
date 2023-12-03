@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='style/mystyle.css') }}">
 </head>
 <body>
-<div>
+<div> Welcome {{ user.first_name }}
     <a href={{ url_for('profile') }}>Profile</a>
+    <a href={{ url_for('form') }}>Reservation</a>
     <a href={{ url_for('logout') }}>Logout</a>
 </div>
 {% with messages = get_flashed_messages() %}

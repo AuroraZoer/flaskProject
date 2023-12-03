@@ -26,7 +26,7 @@ class EditProfileForm(FlaskForm):
     submit = SubmitField('Save Profile')
 
 
-class SignInForm(FlaskForm):
+class LoginForm(FlaskForm):
     email = StringField('Email address*:', validators=[DataRequired()])
     password = PasswordField('Password*:', validators=[DataRequired()])
     submit = SubmitField('Sign In')
