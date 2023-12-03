@@ -111,6 +111,7 @@ def profile():
     reservations = None
     if user_in_db:
         reservations = Reservation.query.filter(Reservation.user_id == user_in_db.id).all()
+        print(reservations)
     return render_template('profile.html', title='Profile', user=user_in_db, reservations=reservations)
 
 
@@ -129,13 +130,14 @@ def form():
             num_of_people=form.num_of_people.data,
             boarding='Boarding' in form.facilities.data,
             sight_seeing='Sight seeing' in form.facilities.data,
-            discount_coupon_used=bool(form.discount_coupon_used.data)
+            discount_coupon_used=bool(form.discount_coupon_used.data),
+            user_id=session.get('ID')
         )
         db.session.add(reservation)
         db.session.commit()
 
         flash('Reservation Complete!')
-        return redirect(url_for('form'))
+        return redirect(url_for('profile'))
     return render_template('form.html', title='Travel Reservation Form', form=form)
 
 
