@@ -56,7 +56,7 @@ def edit_profile():
                 profile = Profile(birthday=form.birthday.data, marital_status=form.marital_status.data,
                                   gender=form.gender.data, city=form.city.data, country=form.country.data,
                                   traveled_countries=form.traveled_countries.data,
-                                  profile_picture=profile_picture_filename, user=user_in_db)
+                                  profile_picture=profile_picture_filename, user=user_in_db.id)
                 db.session.add(profile)
             else:
                 # else, modify the existing object with form data
