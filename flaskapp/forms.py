@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, RadioField, SelectMultipleField, \
     PasswordField, FileField
 from wtforms.validators import DataRequired, NumberRange, ValidationError, Regexp
@@ -21,7 +22,7 @@ class EditProfileForm(FlaskForm):
     country = StringField('Country', validators=[DataRequired()])
     traveled_countries = StringField('Previously Traveled Countries', validators=[DataRequired()])
     profile_picture = FileField('Profile Picture',
-                                validators=[Regexp(r'^[^/\\\s]+\.jpg$', message="Only .jpg files are accepted")])
+                                validators=[FileAllowed(['jpg'], message="Only .jpg files are accepted")])
     submit = SubmitField('Save Profile')
 
 

@@ -45,7 +45,6 @@ def edit_profile():
         if form.validate_on_submit():
             profile_picture_dir = Config.JPG_UPLOAD_DIR
             file_obj = form.profile_picture.data
-            print(file_obj)
             profile_picture_filename = user_in_db.first_name + '_profile_picture.jpg'
             file_obj.save(os.path.join(profile_picture_dir, profile_picture_filename))
             flash('Profile picture uploaded and saved')
@@ -56,7 +55,7 @@ def edit_profile():
                 profile = Profile(birthday=form.birthday.data, marital_status=form.marital_status.data,
                                   gender=form.gender.data, city=form.city.data, country=form.country.data,
                                   traveled_countries=form.traveled_countries.data,
-                                  profile_picture=profile_picture_filename, user=user_in_db.id)
+                                  profile_picture=profile_picture_filename, user_id=user_in_db.id)
                 db.session.add(profile)
             else:
                 # else, modify the existing object with form data
@@ -109,10 +108,13 @@ def profile():
         return redirect(url_for('signup'))
     user_in_db = User.query.filter(User.id == session.get('ID')).first()
     reservations = None
+    profile = None
     if user_in_db:
         reservations = Reservation.query.filter(Reservation.user_id == user_in_db.id).all()
+        profile = Profile.query.filter(Profile.user_id == user_in_db.id).first()
         print(reservations)
-    return render_template('profile.html', title='Profile', user=user_in_db, reservations=reservations)
+    return render_template('profile.html', title='Profile', user=user_in_db, reservations=reservations,
+                           profile=profile)
 
 
 @app.route('/form', methods=['POST', 'GET'])

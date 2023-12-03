@@ -10,10 +10,10 @@
         <!-- Second section with profile picture and links -->
         <div>
             <div style="float:left">
-                {% if user.profile_picture %}
-                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+                {% if profile.profile_picture %}
+                    <img src=" ../static/profile_pics/{{ profile.profile_picture }}" alt="Profile Picture" class="profile-picture">
                 {% else %}
-                    <img src="../static/image/default_user.jpg" alt="Default Profile Picture">
+                    <img src="../static/image/default_user.jpg" alt="Default Profile Picture" class="profile-picture">
                 {% endif %}
             </div>
 
@@ -30,13 +30,15 @@
         <div>
             <p>Firstname: {{ user.first_name }}</p>
             <p>Lastname: {{ user.last_name }}</p>
-            <p>Date of Birth: {{ user.date_of_birth }}</p>
-            <p>Current Country: {{ user.country }}</p>
-            <p>Current City: {{ user.city }}</p>
-            <p>Previously Traveled Countries: {{ user.previously_traveled_countries }}</p>
+            <p>Date of Birth: {{ profile.birthday }}</p>
+            <p>Marital Status: {{ profile.marital_status }}</p>
+            <p>Gender: {{ profile.gender }}</p>
+            <p>City: {{ profile.city }}</p>
+            <p>Country: {{ profile.country }}</p>
+            <p>Previously Traveled Countries: {{ profile.traveled_countries }}</p>
             <p>Previous Reservations</p>
             {% if reservations %}
-                <table style="width: 100%; border-collapse: collapse;">
+                <table style="width: 100%; border-collapse: collapse; text-align: center">
                     <tr>
                         <th>Package</th>
                         <th>Arrival Date</th>
@@ -49,7 +51,7 @@
                         <tr>
                             <td>{{ reservation.package }}</td>
                             <td>{{ reservation.arrival_date }}</td>
-                            <td>{{ reservation.numb_of_persons }}</td>
+                            <td>{{ reservation.num_of_people }}</td>
                             <td>{{ reservation.boarding }}</td>
                             <td>{{ reservation.sight_seeing }}</td>
                             <td>{{ reservation.discount_coupon_used }}</td>

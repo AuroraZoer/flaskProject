@@ -9,4 +9,4 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    JPG_UPLOAD_DIR = os.path.join(basedir, 'profile_pics')
+    JPG_UPLOAD_DIR = os.path.join(basedir, 'static/profile_pics')

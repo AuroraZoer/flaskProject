@@ -35,3 +35,10 @@ form {
 label {
     background-color: #edcd58; /* Dark yellow background */
 }
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
