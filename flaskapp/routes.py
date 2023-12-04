@@ -43,13 +43,16 @@ def edit_profile():
         # get the user object from the database
         user_in_db = User.query.filter(User.id == session.get('ID')).first()
         if form.validate_on_submit():
-            profile_picture_dir = Config.JPG_UPLOAD_DIR
-            file_obj = form.profile_picture.data
-            profile_picture_filename = user_in_db.first_name + '_profile_picture.jpg'
-            file_obj.save(os.path.join(profile_picture_dir, profile_picture_filename))
-            flash('Profile picture uploaded and saved')
-            # check if user already has a profile
+            # check if a profile already exists for the user
             stored_profile = Profile.query.filter(Profile.user == user_in_db).first()
+            profile_picture_filename = stored_profile.profile_picture if stored_profile else None
+            if form.profile_picture.data and hasattr(form.profile_picture.data,
+                                                     'filename') and form.profile_picture.data.filename != '':
+                profile_picture_dir = Config.JPG_UPLOAD_DIR
+                file_obj = form.profile_picture.data
+                profile_picture_filename = user_in_db.first_name + '_profile_picture.jpg'
+                file_obj.save(os.path.join(profile_picture_dir, profile_picture_filename))
+                flash('Profile picture uploaded and saved')
             if not stored_profile:
                 # if no profile exists, add a new object
                 profile = Profile(birthday=form.birthday.data, marital_status=form.marital_status.data,
